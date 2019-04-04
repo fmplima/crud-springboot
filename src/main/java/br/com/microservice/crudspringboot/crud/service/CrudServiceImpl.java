@@ -37,20 +37,45 @@ public class CrudServiceImpl implements CrudService {
 	}
 
 	@Override
-	public String insert(final CrudDto crudDto) {
-		Gson gson = new Gson();
+	public String save(final CrudDto crudDto) {
 		
 		try {
-			ModulesCourse modulesCourseForSave = crudMapper.mapperToObject(crudDto);
-			moduleCourseRepository.save(modulesCourseForSave);
+			moduleCourseRepository.save(requestToObject(crudDto));
 		} catch (MongoException mge) {
 			mge.getStackTrace();		
 		}
 		
 		String logMessengerSucessful = 
-				"{status: " + MESSENGER_SUCESS + "}" ;
+				"{status: " + MESSENGER_SUCESS + "}";
+		return toJson(logMessengerSucessful);
+	}
+	
+	@Override
+	public String updateCourse(final CrudDto crudDto) {
+		try {
+			
+			ModulesCourse returnFind = find(crudDto.getIdCourse());
+			returnFind.setIdCourse(crudDto.getIdCourse());
+			returnFind.setName(crudDto.getName());
+			returnFind.setModule(crudDto.getModule());
+			moduleCourseRepository.save(returnFind);
+			
+		} catch (MongoException mge) {
+			mge.getStackTrace();
+		}
 		
-		return gson.toJson(logMessengerSucessful);
-		
+		String logMessengerSucessful = 
+				"{status: " + MESSENGER_SUCESS + "}";
+		return toJson(logMessengerSucessful);
+	}
+	
+	private String toJson(final String varString) {
+		Gson gson = new Gson();
+		return gson.toJson(varString);
+	}
+	
+	private ModulesCourse requestToObject(final CrudDto crudDto) {
+		ModulesCourse requestObject = crudMapper.mapperToObject(crudDto);
+		return requestObject;
 	}
 }

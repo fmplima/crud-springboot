@@ -11,5 +11,7 @@ public interface CrudService {
 
 	List<ModulesCourse> findAll();
 
-	String insert(final CrudDto crudRequest);
+	String save(final CrudDto crudRequest);
+
+	String updateCourse(final CrudDto crudDto);
 }

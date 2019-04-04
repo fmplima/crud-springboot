@@ -1,7 +1,6 @@
 package br.com.microservice.crudspringboot.crud.api.rest.mapper;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import br.com.microservice.crudspringboot.crud.api.rest.dto.CrudDto;
@@ -11,10 +10,13 @@ import br.com.microservice.crudspringboot.crud.domain.ModulesCourse;
 public class CrudMapper {
 	
 	public ModulesCourse mapperToObject(final CrudDto crudDto) {
-		
 		ModelMapper modelMapper = new ModelMapper();
-		ModulesCourse modulesCourse = modelMapper.map(crudDto, ModulesCourse.class);
-		return modulesCourse;
+		return modelMapper.map(crudDto, ModulesCourse.class);	
+	}
+	
+	public CrudDto mapperObjectToDto(final ModulesCourse modulesCourse) {
+		ModelMapper mapper = new ModelMapper();
+		return mapper.map(modulesCourse, CrudDto.class);
 	}
 	
 }
