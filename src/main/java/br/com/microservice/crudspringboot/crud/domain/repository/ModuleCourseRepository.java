@@ -6,6 +6,8 @@ import br.com.microservice.crudspringboot.crud.domain.ModulesCourse;
 
 public interface ModuleCourseRepository extends MongoRepository<ModulesCourse, String>{
 	
-	public ModulesCourse findByIdCourse(final String idCourse);
+	ModulesCourse findByIdCourse(final String idCourse);
+
+	void deleteByIdCourse(String idCourse);
 	
 }

@@ -53,13 +53,25 @@ public class CrudServiceImpl implements CrudService {
 	@Override
 	public String updateCourse(final CrudDto crudDto) {
 		try {
-			
 			ModulesCourse returnFind = find(crudDto.getIdCourse());
 			returnFind.setIdCourse(crudDto.getIdCourse());
 			returnFind.setName(crudDto.getName());
 			returnFind.setModule(crudDto.getModule());
 			moduleCourseRepository.save(returnFind);
-			
+		} catch (MongoException mge) {
+			mge.getStackTrace();
+		}
+		
+		String logMessengerSucessful = 
+				"{status: " + MESSENGER_SUCESS + "}";
+		return toJson(logMessengerSucessful);
+	}
+	
+	@Override
+	public String deleteCourse(final String idCourse) {
+		
+		try {
+			moduleCourseRepository.deleteByIdCourse(idCourse);
 		} catch (MongoException mge) {
 			mge.getStackTrace();
 		}
@@ -78,4 +90,6 @@ public class CrudServiceImpl implements CrudService {
 		ModulesCourse requestObject = crudMapper.mapperToObject(crudDto);
 		return requestObject;
 	}
+
+	
 }

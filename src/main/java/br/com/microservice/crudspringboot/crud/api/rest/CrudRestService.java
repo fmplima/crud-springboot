@@ -16,6 +16,11 @@ import br.com.microservice.crudspringboot.crud.api.rest.dto.CrudDto;
 import br.com.microservice.crudspringboot.crud.domain.ModulesCourse;
 import br.com.microservice.crudspringboot.crud.service.CrudService;
 
+/**
+ * @author felipe.lima
+ * Implementation of service 
+ */
+
 @RestController
 @RequestMapping(value="/api/courses")
 public class CrudRestService {
@@ -23,11 +28,20 @@ public class CrudRestService {
 	@Autowired
 	private CrudService crudService;
 	
+	/**
+	 * The method find / CRUD
+	 * @param id
+	 */
+	
 	@RequestMapping(produces=MediaType.APPLICATION_JSON_VALUE, method=RequestMethod.GET)
 	public ResponseEntity<ModulesCourse> find(@RequestParam("idCourse") final String idCourse) {
 		ModulesCourse modulesCourse = crudService.find(idCourse);
 		return ResponseEntity.ok().body(modulesCourse);
 	}
+	
+	/**
+	 * The method all data return / CRUD
+	 */
 	
 	@RequestMapping(value="/findAll", produces=MediaType.APPLICATION_JSON_VALUE, method=RequestMethod.GET)
 	public ResponseEntity<List<ModulesCourse>> findAll() {
@@ -35,13 +49,38 @@ public class CrudRestService {
 		return new ResponseEntity<List<ModulesCourse>>(modulesCourseList, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/add",method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+	/**
+	 * The method insert the data / CRUD
+	 * @param object crudDto
+	 */
+	
+	@RequestMapping(value="/add", produces=MediaType.APPLICATION_JSON_VALUE, 
+			consumes=MediaType.APPLICATION_JSON_VALUE, method=RequestMethod.POST)
 	public String add(@RequestBody CrudDto crudRequest) {
 		return crudService.save(crudRequest);
 	}
 	
-	@RequestMapping(value="/update",produces=MediaType.APPLICATION_JSON_VALUE, method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	/**
+	 * The method update the data in dataBase / CRUD
+	 * @param object crudDto
+	 */
+	
+	@RequestMapping(value="/update", produces=MediaType.APPLICATION_JSON_VALUE, 
+			method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public String update(@RequestBody final CrudDto crudDtoUpdate){
 		return crudService.updateCourse(crudDtoUpdate);
 	}
+	
+	/**
+	 * The method remove the data specify in dataBase / CRUD
+	 * @param idCourse
+	 * @param name
+	 */
+	
+	@RequestMapping(produces=MediaType.APPLICATION_JSON_VALUE, method=RequestMethod.DELETE)
+	public String delete(@RequestParam("idCourse") final String idCourse, 
+			@RequestParam("name") final String name) {
+		return crudService.deleteCourse(idCourse);
+	}
+	
 }
